@@ -1,0 +1,49 @@
+---
+// El lugar: fila a sangre. En escritorio, el texto a la izquierda (antetítulo, título, párrafos, firma y enlace) y a la
+// derecha una foto grande (`imagen`) que toca el borde de la ventana, con una segunda foto vertical (`foto`) montada en
+// su esquina con un marco del color de fondo. En el móvil, la foto grande a lo ancho y el texto debajo (la segunda foto
+// no se pinta: no cabe sin quedarse pequeña). `texto` admite párrafos separados por una línea en blanco.
+// Sin fotos, solo el texto.
+import { seccion, parrafos, nueva } from '../../data/site';
+import { altSeccion } from '../../lib/seo';
+import Imagen from '../ui/Imagen.astro';
+import Icono from '../ui/Icono.astro';
+interface Props { id: string }
+const s = seccion(Astro.props.id);
+const foto = typeof s?.foto === 'string' ? s.foto : '';
+const firma = typeof s?.firma === 'string' ? s.firma : '';
+---
+
+{
+  s && (
+    <section id={Astro.props.id} class:list={['lugar', { 'lugar--detalle': !!(s.imagen && foto), 'banda': !s.imagen }]}>
+      {s.imagen && (
+        <div class="lugar-fotos">
+          <div class="lugar-foto">
+            <Imagen src={s.imagen} alt={altSeccion(s)} ancho={1600} alto={1200} />
+          </div>
+          {foto && (
+            <div class="lugar-detalle">
+              <Imagen src={foto} alt="" ancho={600} alto={800} />
+            </div>
+          )}
+        </div>
+      )}
+      <div class:list={['lugar-texto', { contenedor: !s.imagen }]}>
+        {s.antetitulo && <p class="antetitulo">{s.antetitulo}</p>}
+        {s.titulo && <h2 class="titulo-seccion">{s.titulo}</h2>}
+        {parrafos(s.texto).length > 0 && (
+          <div class="cuerpo">
+            {parrafos(s.texto).map((p) => <p>{p}</p>)}
+          </div>
+        )}
+        {firma && <p class="lugar-firma">{firma}</p>}
+        {s.cta?.url && (
+          <p>
+            <a class="enlace-flecha" href={s.cta.url} {...nueva(s.cta.url)}>{s.cta.texto} <Icono nombre="flecha" tam={18} /></a>
+          </p>
+        )}
+      </div>
+    </section>
+  )
+}

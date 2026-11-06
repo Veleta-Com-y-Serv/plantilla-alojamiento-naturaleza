@@ -1,0 +1,35 @@
+---
+// Opiniones: banda salvia con titular y tarjetas claras (comillas grandes en el acento, la opinión en serifa, autor y
+// `nota` — cuándo o de dónde). Una columna en el móvil y tres en escritorio. Sin opiniones, no se pinta nada más que el
+// titular. `testimonios` [{texto, autor, nota}].
+import { seccion } from '../../data/site';
+import Seccion from '../ui/Seccion.astro';
+import Titular from '../ui/Titular.astro';
+interface Props { id: string }
+const s = seccion(Astro.props.id);
+const lista = s?.testimonios ?? [];
+---
+
+{
+  s && (
+    <Seccion id={Astro.props.id} banda="salvia">
+      <Titular antetitulo={s.antetitulo} titulo={s.titulo} texto={s.texto} />
+      {lista.length > 0 && (
+        <div class="opiniones">
+          {lista.map((t) => (
+            <figure class="opinion">
+              <span class="opinion-comillas" aria-hidden="true">“</span>
+              <blockquote><p>{t.texto}</p></blockquote>
+              {(t.autor || t.nota) && (
+                <figcaption>
+                  {t.autor && <b>{t.autor}</b>}
+                  {t.nota && <span>{t.nota}</span>}
+                </figcaption>
+              )}
+            </figure>
+          ))}
+        </div>
+      )}
+    </Seccion>
+  )
+}

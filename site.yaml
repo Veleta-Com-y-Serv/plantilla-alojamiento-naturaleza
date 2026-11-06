@@ -1,0 +1,256 @@
+# Contenido de la web. Es lo único que rellena la plataforma NoExpertise.
+# Las secciones se muestran en el orden de este fichero. Para ocultar una: activa: false.
+# Apartado nuevo: un id propio (es su ancla, /#id) con `tipo:` = el diseño de otra sección o `texto`.
+# Listas siempre planas (nunca una lista dentro de un elemento de lista). Precios siempre entre comillas.
+nombre: La Vega del Cares
+eslogan: Camping, bungalows y casa rural junto al río Cares, en los Picos de Europa.
+sector: camping
+logo: ""          # ruta a una imagen en public/ (p. ej. /logo.svg). Vacío = nombre en texto.
+colores:
+  primario: "#1f3a2e"
+  acento: "#b4582a"
+  fondo: "#f6f3ec"
+  texto: "#1d2420"
+contacto:
+  telefono: "985 84 62 17"
+  email: hola@lavegadelcares.es
+  direccion: Carretera de Poncebos km 2, 33554 Arenas de Cabrales (Asturias)
+  horario: "Recepción de 9:00 a 21:00 en temporada. Entradas desde las 16:00 y salidas hasta las 12:00."
+  whatsapp: "+34 634 84 62 17"
+redes:
+  instagram: https://www.instagram.com/
+  facebook: https://www.facebook.com/
+  linkedin: ""
+menu:
+  - { texto: El lugar, url: "/#alojamiento" }
+  - { texto: Alojamientos, url: "/#alojamientos" }
+  - { texto: Servicios, url: "/#comodidades" }
+  - { texto: El entorno, url: "/#entorno" }
+  - { texto: Fotos, url: "/#galeria" }
+  - { texto: Cómo llegar, url: "/#como-llegar" }
+boton_cabecera: { texto: Reservar, url: "/#reservas" }
+seo:
+  titulo: La Vega del Cares · Camping y casa rural en Arenas de Cabrales
+  descripcion: "Camping con parcelas junto al río, bungalows de madera, tiendas safari y una casa rural de piedra en Arenas de Cabrales, a dos kilómetros de la Ruta del Cares."
+  tipo: Campground
+marca_pie: false
+
+secciones:
+  hero:
+    activa: true
+    antetitulo: "Arenas de Cabrales · Picos de Europa"
+    titulo: Dormir con el río al lado
+    texto: "Parcelas a la sombra, bungalows de madera, tiendas safari y una casa de piedra con hórreo, a dos kilómetros del comienzo de la Ruta del Cares."
+    imagen: /fotos/hero.jpg
+    cta: { texto: Consultar disponibilidad, url: "/#reservas" }
+    cta_secundario: { texto: Ver los alojamientos, url: "/#alojamientos" }
+    items:
+      - { titulo: Junto al río, icono: rio }
+      - { titulo: Piscina en verano, icono: piscina }
+      - { titulo: Se admiten perros, icono: huella }
+      - { titulo: Wifi gratis, icono: wifi }
+
+  alojamiento:
+    activa: true
+    antetitulo: El lugar
+    titulo: Una vega verde entre montañas
+    texto: |
+      La Vega del Cares es una finca de prado y fresnos a la orilla del río, en la entrada de los Picos de Europa. Empezó como el prado de la familia y hoy es un camping pequeño, con sitio de sobra entre parcela y parcela, unos pocos bungalows y la casa de piedra donde vivieron los abuelos.
+
+      Aquí se viene a caminar, a bañarse en el río y a no hacer nada a la sombra. Por la mañana se oye el agua; por la noche, los grillos y poco más.
+    firma: "Marta y Xuacu, la familia que lo lleva"
+    imagen: /fotos/casa.jpg
+    foto: /fotos/casa-detalle.jpg
+    cta: { texto: Ver dónde dormir, url: "/#alojamientos" }
+
+  alojamientos:
+    activa: true
+    antetitulo: Dónde dormir
+    titulo: Cuatro maneras de quedarse
+    texto: "De la parcela para tu tienda a la casa entera para la familia. Todos con el río a un paso y la montaña de frente."
+    alojamientos:
+      - nombre: Casa rural El Hórreo
+        categoria: Casa rural
+        texto: "La casa de piedra de la familia, con corredor de madera, chimenea y un prado propio. Se alquila entera."
+        precio: "desde 160 €/noche"
+        personas: "Hasta 6 personas"
+        extras: "Tres dormitorios, chimenea, cocina completa, jardín con barbacoa"
+        imagen: /fotos/aloj-casa.jpg
+        imagenes: "/fotos/casa.jpg; /fotos/casa-detalle.jpg; /fotos/galeria-7.jpg"
+        detalle: |
+          Es la casa donde vivieron los abuelos, rehabilitada con cuidado: muros de piedra, vigas de castaño y un corredor de madera que mira a las montañas. Se alquila entera, así que el prado de delante y el hórreo son solo para quien se aloja.
+
+          Abajo están el salón con chimenea, la cocina completa y una mesa larga para comer todos juntos. Arriba, tres dormitorios: uno de matrimonio con salida al corredor, otro con dos camas y un tercero con litera, pensado para los niños. Hay dos baños completos.
+
+          Es la opción para familias y grupos de amigos que quieren la tranquilidad de una casa propia y, a la vez, la piscina y el bar del camping a dos minutos andando. En invierno dejamos leña preparada junto a la chimenea.
+      - nombre: Bungalow Ribera
+        categoria: Bungalow
+        texto: "Bungalow de madera con porche, dos dormitorios y cocina, entre fresnos y a cincuenta metros del río."
+        precio: "desde 95 €/noche"
+        personas: "Hasta 4 personas"
+        extras: "Dos dormitorios, baño completo, cocina equipada, porche con mesa"
+        imagen: /fotos/aloj-bungalow.jpg
+        imagenes: "/fotos/aloj-bungalow-dentro.jpg; /fotos/galeria-1.jpg"
+        detalle: |
+          Los bungalows están en la parte más tranquila de la finca, entre fresnos y nogales, con el río a cincuenta metros. Son de madera, luminosos y con un porche cubierto donde se desayuna mirando la montaña.
+
+          Dentro hay un dormitorio de matrimonio, otro con dos camas, un baño completo y una cocina con todo lo necesario para hacer vida sin salir. La ropa de cama y las toallas van incluidas, y la calefacción hace que también apetezcan en primavera y en otoño.
+
+          Van bien a familias con niños y a parejas que quieren algo más de espacio que una tienda. Desde la puerta se llega a la piscina, al parque infantil y al camino que baja hasta la playa de piedras del río.
+      - nombre: Tienda safari
+        categoria: Glamping
+        texto: "Tienda de lona sobre tarima de madera, con cama de verdad, luz y una terraza para ver las estrellas."
+        precio: "desde 75 €/noche"
+        personas: "2 personas"
+        extras: "Cama de matrimonio, luz y enchufes, terraza privada, baños del camping a dos pasos"
+        imagen: /fotos/aloj-glamping.jpg
+        imagenes: "/fotos/aloj-glamping-dentro.jpg; /fotos/galeria-4.jpg"
+        detalle: |
+          Para dormir al aire libre sin renunciar a una buena cama. Las tiendas safari son de lona gruesa, están montadas sobre una tarima de madera y tienen una terraza privada con dos tumbonas.
+
+          Dentro esperan una cama de matrimonio con ropa de algodón, mantas de lana, mesillas con luz y enchufes para cargar el teléfono. Los baños y las duchas del camping están a dos pasos, siempre limpios.
+
+          Es lo que más piden las parejas en verano: de noche, con el cielo despejado, desde la terraza se ve la Vía Láctea. Abren de mayo a septiembre.
+      - nombre: Parcelas junto al río
+        categoria: Parcela
+        texto: "Parcelas amplias de hierba, con sombra y enchufe, para tienda, caravana o autocaravana."
+        precio: "desde 28 €/noche"
+        personas: "Hasta 6 personas"
+        extras: "Toma de luz, sombra de árboles, agua cerca, mascotas admitidas"
+        imagen: /fotos/aloj-parcela.jpg
+    cta: { texto: Consultar disponibilidad, url: "/#reservas" }
+
+  comodidades:
+    activa: true
+    antetitulo: Servicios e instalaciones
+    titulo: Todo lo que hace falta, nada que sobre
+    texto: "Lo justo para estar a gusto unos días sin tener que coger el coche."
+    imagen: /fotos/servicios.jpg
+    items:
+      - { titulo: Piscina, texto: "Abierta en verano, con zona de césped y tumbonas.", icono: piscina }
+      - { titulo: Bar y terraza, texto: "Desayunos, bocadillos y platos sencillos con producto de la zona.", icono: taza }
+      - { titulo: Duchas y baños, texto: "Con agua caliente, limpios a diario y adaptados.", icono: ducha }
+      - { titulo: Tienda, texto: "Pan del día, leche, fruta y lo básico que siempre se olvida.", icono: cesta }
+      - { titulo: Lavandería, texto: "Lavadoras y secadora con fichas en recepción.", icono: lavadora }
+      - { titulo: Wifi, texto: "Gratis en recepción, el bar y la zona de bungalows.", icono: wifi }
+      - { titulo: Parque infantil, texto: "De madera, a la sombra y a la vista desde el bar.", icono: nino }
+      - { titulo: Mascotas, texto: "Perros bienvenidos en parcelas y bungalows, con aviso.", icono: huella }
+
+  entorno:
+    activa: true
+    antetitulo: El entorno
+    titulo: Montaña, río y pueblos de piedra
+    texto: "Estamos en la puerta de los Picos de Europa. En recepción te contamos qué ruta hacer según el tiempo y las ganas."
+    actividades:
+      - titulo: Ruta del Cares
+        texto: "La garganta excavada en la roca entre Poncebos y Caín. La más famosa de los Picos."
+        distancia: "A 2 km"
+        imagen: /fotos/entorno-cares.jpg
+        imagenes: "/fotos/galeria-3.jpg"
+        detalle: |
+          Es la ruta más conocida de los Picos de Europa y empieza casi en la puerta del camping. El camino va tallado en la pared de la garganta, colgado sobre el río, entre Poncebos y Caín, con túneles, puentes y vistas que no se olvidan.
+
+          Apenas tiene subidas salvo al principio, así que la hace mucha gente, también con niños mayores. Conviene salir temprano en verano para evitar el calor y las aglomeraciones, llevar agua y calzado de montaña.
+
+          Si no quieres hacerla entera, basta con caminar desde Poncebos hasta el primer tramo de túneles y volver. En recepción te explicamos cómo combinarla con la vuelta en taxi.
+      - titulo: Lagos de Covadonga
+        texto: "Los lagos Enol y Ercina, con vacas pastando y la montaña reflejada en el agua."
+        distancia: "A 45 minutos en coche"
+        imagen: /fotos/entorno-lagos.jpg
+        detalle: |
+          Los lagos Enol y Ercina están en lo alto del macizo occidental, rodeados de pastos y de cumbres de caliza. Un paseo circular sencillo une los dos lagos y pasa por varios miradores.
+
+          En temporada alta la subida en coche está regulada y se hace en autobús desde Cangas de Onís. Te recomendamos ir a primera hora, cuando la niebla se levanta del agua y apenas hay nadie.
+
+          De vuelta, merece la pena parar en el santuario de Covadonga y comer en algún pueblo del camino.
+      - titulo: Descenso del Sella
+        texto: "Canoa por el río entre Arriondas y Llovio, un plan para toda la familia."
+        distancia: "A 40 minutos en coche"
+        imagen: /fotos/entorno-sella.jpg
+        detalle: |
+          Bajar el Sella en canoa es uno de los planes más divertidos de la zona y no hace falta experiencia: en verano el río va tranquilo y hay recorridos cortos para ir con niños.
+
+          Las empresas de Arriondas alquilan la canoa y los chalecos y te recogen al final con su furgoneta. Lleva ropa que se pueda mojar, calzado de agua y crema para el sol.
+
+          Si quieres, te ayudamos a reservar con alguna de las empresas que conocemos.
+      - titulo: Bulnes
+        texto: "El pueblo sin carretera, al que se sube a pie o en funicular desde Poncebos."
+        distancia: "A 3 km"
+        imagen: /fotos/entorno-bulnes.jpg
+
+  galeria:
+    activa: true
+    antetitulo: Fotos
+    titulo: Así es un día en la vega
+    galeria:
+      - /fotos/hero.jpg
+      - /fotos/galeria-1.jpg
+      - /fotos/galeria-2.jpg
+      - /fotos/galeria-4.jpg
+      - /fotos/galeria-3.jpg
+      - /fotos/galeria-5.jpg
+      - /fotos/galeria-7.jpg
+      - /fotos/galeria-6.jpg
+
+  temporada:
+    activa: true
+    antetitulo: Temporada
+    titulo: Cuándo estamos abiertos
+    texto: "El camping abre de Semana Santa a octubre. La casa rural y los bungalows, todo el año."
+    imagen: /fotos/temporada.jpg
+    horario:
+      - { dia: Camping y tiendas safari, horas: "De Semana Santa al 12 de octubre" }
+      - { dia: Casa rural y bungalows, horas: "Todo el año" }
+      - { dia: Piscina, horas: "Del 15 de junio al 15 de septiembre" }
+      - { dia: Recepción, horas: "De 9:00 a 21:00 en temporada" }
+      - { dia: Entrada y salida, horas: "Entrada desde las 16:00, salida hasta las 12:00" }
+    nota: "En julio y agosto, estancia mínima de tres noches en la casa rural y los bungalows."
+
+  opiniones:
+    activa: true
+    antetitulo: Opiniones
+    titulo: Lo que cuentan quienes vuelven
+    testimonios:
+      - { texto: "Las parcelas son enormes y con sombra, y el río está ahí mismo. Los niños no salieron del agua en toda la semana.", autor: Familia Robles, nota: "Agosto de 2026" }
+      - { texto: "Dormir en la tienda safari y ver las estrellas desde la terraza fue lo mejor del viaje. Todo muy limpio y cuidado.", autor: Lucía y Marcos, nota: "Julio de 2026" }
+      - { texto: "Hicimos la Ruta del Cares saliendo andando desde el camping. Marta nos dio mil consejos. Volveremos en otoño.", autor: Andrés G., nota: "Septiembre de 2026" }
+
+  como-llegar:
+    activa: true
+    antetitulo: Cómo llegar
+    titulo: A la entrada de los Picos de Europa
+    texto: "Estamos en la carretera de Poncebos, a dos kilómetros de Arenas de Cabrales. La entrada está señalizada junto al puente."
+    imagen: /fotos/llegar.jpg
+    cta: { texto: Abrir en Google Maps, url: "" }
+    items:
+      - { titulo: En coche, texto: "Desde Oviedo por la A-64 y la AS-114, en 1 h 20 min. Desde Santander por la A-8, en 1 h 30 min.", icono: coche }
+      - { titulo: En autobús, texto: "Hay autobuses diarios de Oviedo a Arenas de Cabrales. Desde la parada, 25 minutos a pie o un taxi.", icono: bus }
+      - { titulo: En avión, texto: "El aeropuerto de Asturias está a una hora y media; el de Santander, a una hora y cuarenta.", icono: avion }
+
+  preguntas:
+    activa: true
+    antetitulo: Preguntas frecuentes
+    titulo: Antes de venir
+    preguntas:
+      - { pregunta: "¿Se admiten perros?", respuesta: "Sí, en las parcelas y en los bungalows, con aviso al reservar. En la piscina y en el bar, no." }
+      - { pregunta: "¿Hay que reservar parcela?", respuesta: "En julio, agosto y puentes, sí. El resto del año suele haber sitio, pero escríbenos antes para asegurarte." }
+      - { pregunta: "¿La ropa de cama está incluida?", respuesta: "En la casa rural, los bungalows y las tiendas safari, sí: sábanas y toallas. En las parcelas, cada uno trae lo suyo." }
+      - { pregunta: "¿Se puede llegar andando a la Ruta del Cares?", respuesta: "Sí. Poncebos, donde empieza la ruta, está a dos kilómetros por un camino junto al río." }
+      - { pregunta: "¿Puedo cancelar?", respuesta: "Cancelación gratuita hasta siete días antes de la llegada. Después se cobra la primera noche." }
+
+  reservas:
+    activa: true
+    antetitulo: Reservas
+    titulo: Cuéntanos tus fechas
+    texto: "Dinos cuándo vienes, cuántos sois y dónde te apetece dormir. Te contestamos en el día con la disponibilidad y el precio."
+    imagen: /fotos/reservas.jpg
+    cta: { texto: Escribir por WhatsApp, url: "https://wa.me/34634846217?text=Hola%2C%20quiero%20consultar%20fechas" }
+    cta_secundario: { texto: Reservar en línea, url: "" }
+    enlace_reservas: ""
+    nota: "Cancelación gratuita hasta siete días antes de la llegada."
+
+  contacto:
+    activa: true
+    antetitulo: Contacto
+    titulo: Hablamos cuando quieras
+    texto: "Para una duda, un grupo grande o una estancia larga, llámanos o escríbenos. En temporada contestamos el mismo día."

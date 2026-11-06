@@ -1,0 +1,50 @@
+---
+// El entorno y actividades: banda clara con titular partido y tarjetas verticales con FOTO GRANDE (3:4) y, sobre ella,
+// la distancia en una píldora y el nombre en blanco; debajo, el texto. En el móvil, carrusel horizontal con
+// desplazamiento por pasos que llega al borde de la pantalla; en escritorio, una fila de tarjetas.
+// `actividades` [{titulo, texto, distancia, imagen}]: `distancia` como cadena («A 2 km»). Las que tienen `detalle`
+// tienen página propia (/entorno/<slug>/) y la tarjeta entera enlaza a ella. Sin foto, la tarjeta es de color bosque.
+import { seccion, nueva } from '../../data/site';
+import Titular from '../ui/Titular.astro';
+import Imagen from '../ui/Imagen.astro';
+import Icono from '../ui/Icono.astro';
+import { enlaceDe } from '../../lib/paginas';
+interface Props { id: string }
+const s = seccion(Astro.props.id);
+const lista = s?.actividades ?? [];
+---
+
+{
+  s && (
+    <section id={Astro.props.id} class="banda banda--claro">
+      <div class="contenedor">
+        <Titular alinear="partido" antetitulo={s.antetitulo} titulo={s.titulo} texto={s.texto} />
+      </div>
+      {lista.length > 0 && (
+        <ul class="lugares" aria-label={s.titulo || 'El entorno'}>
+          {lista.map((a) => {
+            const url = enlaceDe(a);
+            return (
+              <li class="lugar-tarjeta">
+                <div class="lugar-tarjeta-foto">
+                  {a.imagen ? <Imagen src={a.imagen} alt={a.titulo} ancho={900} alto={1200} /> : <span class="absolute inset-0 grid place-items-center opacity-60"><Icono nombre="montana" tam={72} /></span>}
+                  <div class="lugar-tarjeta-pie">
+                    {a.distancia && <span class="lugar-tarjeta-distancia">{a.distancia}</span>}
+                    <h3 class="lugar-tarjeta-titulo">{url ? <a href={url}>{a.titulo}</a> : a.titulo}</h3>
+                  </div>
+                </div>
+                {a.texto && <p class="lugar-tarjeta-texto">{a.texto}</p>}
+                {url && <span class="lugar-tarjeta-ver" aria-hidden="true">Saber más <Icono nombre="flecha" tam={16} /></span>}
+              </li>
+            );
+          })}
+        </ul>
+      )}
+      {s.cta?.url && (
+        <div class="contenedor mt-12">
+          <a class="btn" href={s.cta.url} {...nueva(s.cta.url)}>{s.cta.texto}</a>
+        </div>
+      )}
+    </section>
+  )
+}

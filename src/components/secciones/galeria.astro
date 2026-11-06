@@ -1,0 +1,58 @@
+---
+// Galería a ancho completo: titular centrado y un mosaico de borde a borde (sin márgenes laterales, con juntas finas):
+// la primera foto grande (2 × 2) y el resto en un ritmo de verticales y apaisadas (cuatro columnas en escritorio, dos
+// en el móvil). Cada foto abre la imagen entera; con JavaScript, en un visor (<dialog>) sin salir de la página.
+// `galeria`: lista de rutas. Con 8 fotos el mosaico queda cerrado en escritorio.
+import { seccion } from '../../data/site';
+import { altGaleria } from '../../lib/seo';
+import Titular from '../ui/Titular.astro';
+import Imagen from '../ui/Imagen.astro';
+interface Props { id: string }
+const s = seccion(Astro.props.id);
+const fotos = s?.galeria ?? [];
+---
+
+{
+  s && (
+    <section id={Astro.props.id} class="banda banda--claro !pb-0">
+      <div class="contenedor">
+        <Titular alinear="centro" antetitulo={s.antetitulo} titulo={s.titulo} texto={s.texto} />
+      </div>
+      {fotos.length > 0 && (
+        <ul class="mosaico" data-galeria>
+          {fotos.map((src, i) => (
+            <li>
+              <a href={src} data-visor aria-label={`Ver en grande: ${altGaleria(i)}`}>
+                <Imagen src={src} alt={altGaleria(i)} ancho={1200} alto={900} />
+              </a>
+            </li>
+          ))}
+        </ul>
+      )}
+      {fotos.length > 0 && (
+        <dialog class="visor" aria-label="Foto en grande" data-visor-dialogo>
+          <img alt="" />
+          <button type="button" class="visor-cerrar" aria-label="Cerrar" data-visor-cerrar>×</button>
+        </dialog>
+      )}
+    </section>
+  )
+}
+<script is:inline>
+  (function () {
+    var d = document.querySelector('[data-visor-dialogo]');
+    if (!d || typeof d.showModal !== 'function') return;
+    var img = d.querySelector('img');
+    document.querySelectorAll('[data-visor]').forEach(function (a) {
+      a.addEventListener('click', function (e) {
+        e.preventDefault();
+        var i = a.querySelector('img');
+        img.src = a.getAttribute('href');
+        img.alt = i ? i.alt : '';
+        d.showModal();
+      });
+    });
+    d.querySelector('[data-visor-cerrar]').addEventListener('click', function () { d.close(); });
+    d.addEventListener('click', function (e) { if (e.target === d) d.close(); });
+  })();
+</script>

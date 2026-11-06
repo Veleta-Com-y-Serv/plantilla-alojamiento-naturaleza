@@ -1,0 +1,47 @@
+---
+// Temporada y horarios: fila a sangre sobre salvia. La foto (`imagen`) toca el borde izquierdo de la ventana y, al otro
+// lado, titular, texto y una tabla con filetes (`horario`: [{dia, horas}] — «Camping» / «De Semana Santa a octubre»,
+// «Recepción» / «De 9:00 a 21:00»), más una `nota` (estancia mínima, festivos…). Sin foto, banda con el texto solo.
+import { seccion, parrafos } from '../../data/site';
+import { altSeccion } from '../../lib/seo';
+import Imagen from '../ui/Imagen.astro';
+import Icono from '../ui/Icono.astro';
+interface Props { id: string }
+const s = seccion(Astro.props.id);
+const filas = (s?.horario ?? []).filter((h) => h.dia || h.horas);
+---
+
+{
+  s && (
+    <section id={Astro.props.id} class:list={['banda banda--salvia', { 'sin-relleno': !!s.imagen }]}>
+      <div class:list={[s.imagen ? 'partida' : 'contenedor']}>
+        {s.imagen && (
+          <div class="partida-foto">
+            <Imagen src={s.imagen} alt={altSeccion(s)} ancho={1400} alto={1050} />
+          </div>
+        )}
+        <div class:list={[{ 'partida-texto': !!s.imagen }, { 'max-w-3xl': !s.imagen }]}>
+          {s.antetitulo && <p class="antetitulo">{s.antetitulo}</p>}
+          {s.titulo && <h2 class="titulo-seccion">{s.titulo}</h2>}
+          {parrafos(s.texto).map((p) => <p class="titular-texto">{p}</p>)}
+          {filas.length > 0 && (
+            <dl class="tabla-horario">
+              {filas.map((h) => (
+                <div>
+                  <dt>{h.dia}</dt>
+                  <dd>{h.horas}</dd>
+                </div>
+              ))}
+            </dl>
+          )}
+          {s.nota && (
+            <p class="nota">
+              <Icono nombre="calendario" tam={20} />
+              <span>{s.nota}</span>
+            </p>
+          )}
+        </div>
+      </div>
+    </section>
+  )
+}

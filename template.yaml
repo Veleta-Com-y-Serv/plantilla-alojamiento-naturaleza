@@ -1,0 +1,114 @@
+# Metadatos de la plantilla para el catálogo de NoExpertise.
+id: alojamiento-naturaleza
+nombre: Camping y alojamiento rural
+descripcion: Web de fotos grandes para campings, casas rurales y bungalows, con alojamientos, entorno y reservas.
+sectores:
+  - { id: camping, nombre: Camping }
+  - { id: casa-rural, nombre: Casa rural }
+  - { id: glamping, nombre: Glamping }
+  - { id: albergue, nombre: Albergue }
+  - { id: hotel-rural, nombre: Hotel rural }
+  - { id: apartamentos-rurales, nombre: Apartamentos rurales }
+secciones:
+  - { id: hero, nombre: Portada }
+  - { id: alojamiento, nombre: El lugar }
+  - { id: alojamientos, nombre: Alojamientos }
+  - { id: comodidades, nombre: Servicios e instalaciones }
+  - { id: entorno, nombre: El entorno }
+  - { id: galeria, nombre: Fotos }
+  - { id: temporada, nombre: Temporada y horarios }
+  - { id: opiniones, nombre: Opiniones }
+  - { id: como-llegar, nombre: Cómo llegar }
+  - { id: preguntas, nombre: Preguntas frecuentes }
+  - { id: reservas, nombre: Reservas }
+  - { id: contacto, nombre: Contacto }
+estilo: natural
+plan_minimo: presencia
+version: 1.0.0
+base: astrowind
+demo_url: https://demo-plantilla-alojamiento-naturaleza.noexpertise.com
+activa: true
+orden: 650
+
+# Páginas propias (docs/plantillas.md § Fichas por elemento y páginas por zona). Espejo en src/data/fichas.ts.
+fichas:
+  - { lista: alojamientos, campo: alojamientos, ruta: alojamientos, nombre: Alojamiento, tipo: Accommodation }
+  - { lista: entorno, campo: actividades, ruta: entorno, nombre: Lugar del entorno, tipo: TouristAttraction }
+
+# Varias páginas (docs/plantillas.md § Varias páginas): reparto recomendado al activar «Varias páginas».
+# Inicio se queda con la portada y lo que no esté en ninguna página (aquí, el lugar, fotos y opiniones).
+paginas:
+  - { ruta: alojamientos, titulo: Alojamientos, secciones: "alojamientos; comodidades" }
+  - { ruta: entorno, titulo: El entorno, secciones: "entorno; como-llegar" }
+  - { ruta: reservas, titulo: Reservas, secciones: "temporada; preguntas; reservas; contacto" }
+
+# Asistente de puesta en marcha (NoExpertise): un paso por pantalla. Rutas del site sin índices;
+# tipos: texto y lista (la IA propone), datos, fotos, eleccion (colores y logo) y repaso.
+asistente:
+  - id: negocio
+    titulo: "Tu alojamiento"
+    pregunta: "¿Cómo se llama tu camping, casa rural o alojamiento y qué lo hace especial?"
+    ayuda: "Dónde está, qué se ve desde allí, para quién es (familias, parejas, grupos, gente con perro) y qué se respira."
+    tipo: texto
+    campos: [nombre, eslogan, seo.titulo, seo.descripcion, secciones.hero.antetitulo, secciones.hero.titulo, secciones.hero.texto, secciones.hero.items]
+  - id: contacto
+    titulo: "Cómo te encuentran"
+    pregunta: "¿Dónde estáis y cómo os pueden llamar o reservar?"
+    ayuda: "Solo lo que quieras que vean tus huéspedes. Lo que dejes vacío no sale en tu web."
+    tipo: datos
+    campos: [contacto.telefono, contacto.whatsapp, contacto.email, contacto.direccion, contacto.horario, secciones.reservas.enlace_reservas, redes.instagram, redes.facebook]
+  - id: alojamiento
+    titulo: "El lugar"
+    pregunta: "Cuéntame tu sitio: cómo empezó, cómo es la finca o la casa y qué se siente al llegar."
+    ayuda: "Es lo primero que se lee después de la portada, junto a una foto grande."
+    tipo: texto
+    campos: [secciones.alojamiento.antetitulo, secciones.alojamiento.titulo, secciones.alojamiento.texto, secciones.alojamiento.firma]
+  - id: alojamientos
+    titulo: "Dónde dormir"
+    pregunta: "¿Qué alojamientos tienes? Casa, bungalows, tiendas, parcelas, habitaciones… Uno por línea, con cuántas personas caben y el precio si quieres."
+    ayuda: "Si lo prefieres, añádelos luego en Contenido."
+    tipo: lista
+    campos: [secciones.alojamientos.alojamientos]
+  - id: comodidades
+    titulo: "Servicios e instalaciones"
+    pregunta: "¿Qué tienes para tus huéspedes? Piscina, bar, duchas, lavandería, wifi, barbacoas, mascotas…"
+    ayuda: "Uno por línea. Si lo prefieres, añádelos luego en Contenido."
+    tipo: lista
+    campos: [secciones.comodidades.items]
+  - id: entorno
+    titulo: "El entorno"
+    pregunta: "¿Qué recomiendas hacer cerca? Rutas, pueblos, ríos, playas, actividades… Uno por línea, con lo lejos que está si quieres."
+    ayuda: "Si lo prefieres, añádelos luego en Contenido."
+    tipo: lista
+    campos: [secciones.entorno.actividades]
+  - id: temporada
+    titulo: "Temporada y horarios"
+    pregunta: "¿Cuándo abres y a qué horas? Temporada, recepción, entrada y salida, piscina…"
+    ayuda: "Una cosa por línea, como «Recepción: de 9:00 a 21:00»."
+    tipo: lista
+    campos: [secciones.temporada.horario]
+  - id: reservas
+    titulo: "Reservas"
+    pregunta: "¿Cómo se reserva? Cuéntame lo que tiene que saber quien quiera venir: cancelación, estancia mínima, señal…"
+    tipo: texto
+    campos: [secciones.reservas.titulo, secciones.reservas.texto, secciones.reservas.nota]
+  - id: preguntas
+    titulo: "Preguntas frecuentes"
+    pregunta: "¿Qué os preguntan más a menudo? Escribe cada pregunta y lo que respondéis."
+    ayuda: "Si lo prefieres, añádelas luego en Contenido."
+    tipo: lista
+    campos: [secciones.preguntas.preguntas]
+  - id: fotos
+    titulo: "Tus fotos"
+    pregunta: "Pon una foto de portada bien grande y, si quieres, las del lugar, los servicios, la temporada y la galería."
+    ayuda: "Sube las tuyas o elige una del banco. Las que no cambies se quedan como están."
+    tipo: fotos
+    campos: [secciones.hero.imagen, secciones.alojamiento.imagen, secciones.alojamiento.foto, secciones.comodidades.imagen, secciones.temporada.imagen, secciones.reservas.imagen, secciones.galeria.galeria]
+  - id: aspecto
+    titulo: "Colores y logo"
+    pregunta: "Elige los colores de tu web y, si tienes, tu logo."
+    tipo: eleccion
+    campos: [colores.primario, colores.acento, logo]
+  - id: repaso
+    titulo: "Repaso"
+    tipo: repaso

@@ -1,0 +1,74 @@
+---
+// Alojamientos: banda salvia con titular partido y una rejilla de fichas con FOTO GRANDE (4:3, esquinas suaves) en dos
+// columnas desde 860 px; con un número impar, la primera ocupa todo el ancho con la foto panorámica (21:9).
+// Sobre la foto, el tipo (`categoria`) en una píldora clara y el precio (si lo hay) en una oscura; debajo, nombre,
+// capacidad (`personas`), texto y extras (`extras`, una cadena separada por comas) como etiquetas.
+// `alojamientos` [{nombre, categoria, texto, precio, personas, extras, imagen}]: lo que esté vacío no se pinta.
+// Los que tienen `detalle` tienen página propia (/alojamientos/<slug>/, src/pages/[coleccion]/[slug].astro) y la
+// ficha entera enlaza a ella.
+import { seccion, valores, nueva } from '../../data/site';
+import Seccion from '../ui/Seccion.astro';
+import Titular from '../ui/Titular.astro';
+import Imagen from '../ui/Imagen.astro';
+import Icono from '../ui/Icono.astro';
+import { enlaceDe } from '../../lib/paginas';
+interface Props { id: string }
+const s = seccion(Astro.props.id);
+const lista = s?.alojamientos ?? [];
+const mayus = (x: string) => x.charAt(0).toUpperCase() + x.slice(1);
+---
+
+{
+  s && (
+    <Seccion id={Astro.props.id} banda="salvia">
+      <Titular alinear="partido" antetitulo={s.antetitulo} titulo={s.titulo} texto={s.texto} />
+      {lista.length > 0 && (
+        <div class="estancias">
+          {lista.map((h) => {
+            const url = enlaceDe(h);
+            return (
+              <article class:list={['estancia', { 'estancia--sin-foto': !h.imagen, 'estancia--enlace': !!url }]}>
+                {h.imagen ? (
+                  <div class="estancia-foto">
+                    <Imagen src={h.imagen} alt={h.nombre} ancho={1400} alto={1050} />
+                    {h.categoria && <span class="estancia-tipo rotulo">{h.categoria}</span>}
+                    {h.precio && <span class="estancia-precio">{h.precio}</span>}
+                  </div>
+                ) : null}
+                <div class="estancia-cuerpo">
+                  {!h.imagen && (h.categoria || h.precio) && (
+                    <p class="flex flex-wrap gap-2">
+                      {h.categoria && <span class="rotulo estancia-personas">{h.categoria}</span>}
+                      {h.precio && <span class="font-semibold">{h.precio}</span>}
+                    </p>
+                  )}
+                  <div class="estancia-cabeza">
+                    <h3 class="estancia-titulo">{url ? <a href={url}>{h.nombre}</a> : h.nombre}</h3>
+                    {h.personas && (
+                      <span class="estancia-personas">
+                        <Icono nombre="usuarios" tam={18} />
+                        {h.personas}
+                      </span>
+                    )}
+                  </div>
+                  {h.texto && <p class="estancia-texto">{h.texto}</p>}
+                  {valores(h.extras).length > 0 && (
+                    <ul class="estancia-extras" aria-label="Qué tiene">
+                      {valores(h.extras).map((x) => <li>{mayus(x)}</li>)}
+                    </ul>
+                  )}
+                  {url && <span class="estancia-ver enlace-flecha" aria-hidden="true">Ver el alojamiento <Icono nombre="flecha" tam={16} /></span>}
+                </div>
+              </article>
+            );
+          })}
+        </div>
+      )}
+      {s.cta?.url && (
+        <p class="mt-16 text-center">
+          <a class="btn" href={s.cta.url} {...nueva(s.cta.url)}>{s.cta.texto}</a>
+        </p>
+      )}
+    </Seccion>
+  )
+}

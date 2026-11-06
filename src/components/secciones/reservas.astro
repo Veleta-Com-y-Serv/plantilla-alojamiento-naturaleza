@@ -1,0 +1,47 @@
+---
+// Reservas: fila a sangre. La foto (`imagen`) toca el borde de la ventana (a la derecha en escritorio, arriba en el
+// móvil) y al otro lado, sobre bosque, el titular, el texto, el botón (`cta`, normalmente WhatsApp), la web externa de
+// reservas (`enlace_reservas`, si es https://…; su texto sale de `cta_secundario.texto`), la `nota` y el formulario
+// de llegada, salida y personas (lo rellena la barra de fechas de la portada). Sin foto, banda bosque con el texto.
+import { seccion, site, externo, parrafos, nueva } from '../../data/site';
+import { altSeccion } from '../../lib/seo';
+import Imagen from '../ui/Imagen.astro';
+import Icono from '../ui/Icono.astro';
+import FormularioContacto from '../ui/FormularioContacto.astro';
+interface Props { id: string }
+const s = seccion(Astro.props.id);
+const enlace = s?.enlace_reservas && externo(s.enlace_reservas) ? s.enlace_reservas : '';
+const etiquetaEnlace = s?.cta_secundario?.texto || 'Reservar en línea';
+---
+
+{
+  s && (
+    <section id={Astro.props.id} class:list={['banda banda--bosque', { 'sin-relleno': !!s.imagen }]}>
+      <div class:list={[s.imagen ? 'partida partida--invertida' : 'contenedor']}>
+        {s.imagen && (
+          <div class="partida-foto">
+            <Imagen src={s.imagen} alt={altSeccion(s)} ancho={1200} alto={1400} />
+          </div>
+        )}
+        <div class:list={['reserva-texto', { 'partida-texto': !!s.imagen }, { 'max-w-3xl': !s.imagen }]}>
+          {s.antetitulo && <p class="antetitulo">{s.antetitulo}</p>}
+          {s.titulo && <h2 class="titulo-seccion">{s.titulo}</h2>}
+          {parrafos(s.texto).length > 0 && <div class="cuerpo">{parrafos(s.texto).map((p) => <p>{p}</p>)}</div>}
+          {(s.cta?.url || enlace) && (
+            <div class="botones">
+              {s.cta?.url && <a class="btn" href={s.cta.url} {...nueva(s.cta.url)}>{s.cta.texto}</a>}
+              {enlace && <a class="btn-sec" href={enlace} rel="noopener" target="_blank">{etiquetaEnlace}</a>}
+            </div>
+          )}
+          {s.nota && (
+            <p class="nota">
+              <Icono nombre="check" tam={20} />
+              <span>{s.nota}</span>
+            </p>
+          )}
+          <FormularioContacto estancia oscuro prefijo={`r-${Astro.props.id}`} boton="Consultar disponibilidad" asunto={`Reserva en ${site.nombre}`} />
+        </div>
+      </div>
+    </section>
+  )
+}

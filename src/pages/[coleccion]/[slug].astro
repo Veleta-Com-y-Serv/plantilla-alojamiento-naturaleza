@@ -1,0 +1,176 @@
+---
+// Ficha de un alojamiento o de un lugar del entorno con `detalle` (src/lib/paginas.ts, listas de src/data/fichas.ts):
+// /alojamientos/<slug>/ y /entorno/<slug>/. Diseño «la ventana grande», con la misma piel que la portada: foto del
+// elemento a sangre a casi media pantalla con migas, tipo, nombre, precio y capacidad encima; banda clara con el
+// `detalle` en párrafos y, al lado, la tabla de datos y la caja para reservar o preguntar; fotos (`imagenes`) en
+// mosaico de borde a borde; y otros elementos de la misma lista con foto grande. Sin foto, la cabecera es bosque.
+import Base from '../../layouts/Base.astro';
+import Imagen from '../../components/ui/Imagen.astro';
+import Icono from '../../components/ui/Icono.astro';
+import Titular from '../../components/ui/Titular.astro';
+import { seccion, site, tel, whatsapp } from '../../data/site';
+import { fichas, relacionadas, resumen } from '../../lib/paginas';
+import type { Ficha } from '../../lib/paginas';
+import { altGaleria, jsonLdFicha, jsonLdMigas, urlBase } from '../../lib/seo';
+import { enlace, rutaDeSeccion } from '../../lib/multipagina';
+
+export function getStaticPaths() {
+  return fichas().map((f) => ({ params: { coleccion: f.def.ruta, slug: f.slug }, props: { f } }));
+}
+
+interface Props { f: Ficha }
+const { f } = Astro.props;
+const base = urlBase(Astro.site);
+const esEstancia = f.def.lista === 'alojamientos';
+const nombreSeccion = String(f.seccion.antetitulo || f.seccion.titulo || f.def.nombre).trim();
+const migas = [
+  { nombre: 'Inicio', ruta: '/' },
+  { nombre: nombreSeccion, ruta: rutaDeSeccion(f.idSeccion) },
+  { nombre: f.titulo, ruta: f.url },
+];
+const c = site.contacto;
+const reserva = seccion('reservas') ? enlace('/#reservas') : site.boton_cabecera?.url || enlace('/#contacto');
+const textoReserva = esEstancia ? site.boton_cabecera?.texto || 'Reservar' : 'Pregúntanos';
+const wa = whatsapp(c.whatsapp, `Hola, quiero información sobre ${f.titulo}`);
+const personas = f.datos.find((d) => d.clave === 'personas')?.valor ?? '';
+const distancia = f.datos.find((d) => d.clave === 'distancia')?.valor ?? '';
+const datos = f.datos.filter((d) => !['precio', 'personas', 'categoria'].includes(d.clave));
+const otras = relacionadas(f, 3);
+const descripcion = resumen(f.texto || f.detalle[0] || '');
+const tituloOtras = esEstancia ? 'Otras maneras de quedarse' : 'Más cosas que hacer cerca';
+const verTodas = esEstancia ? 'Ver todos los alojamientos' : 'Ver todo el entorno';
+---
+
+<Base titulo={f.titulo} descripcion={descripcion} imagen={f.imagen} ld={[jsonLdMigas(base, migas), jsonLdFicha(base, f)]}>
+  <section class:list={['ficha-cabeza', { 'portada ficha-cabeza--foto': !!f.imagen }]}>
+    {f.imagen && (
+      <div class="portada-foto">
+        <Imagen src={f.imagen} alt={f.titulo} ancho={1920} alto={1080} prioridad />
+      </div>
+    )}
+    <div class="contenedor ficha-cabeza-texto">
+      <nav aria-label="Migas de pan" class="migas">
+        <ol>
+          {migas.map((m, i) => (
+            <li>{i < migas.length - 1 ? <a href={m.ruta}>{m.nombre}</a> : <span aria-current="page">{m.nombre}</span>}</li>
+          ))}
+        </ol>
+      </nav>
+      <p class="antetitulo">{f.categoria || f.def.nombre}</p>
+      <h1 class="ficha-titulo">{f.titulo}</h1>
+      {f.texto && <p class="ficha-entradilla">{f.texto}</p>}
+      {(f.precio || personas || distancia) && (
+        <p class="ficha-chips">
+          {f.precio && <span class="ficha-chip ficha-chip--precio">{f.precio}</span>}
+          {personas && <span class="ficha-chip"><Icono nombre="usuarios" tam={18} /> {personas}</span>}
+          {distancia && <span class="ficha-chip"><Icono nombre="ruta" tam={18} /> {distancia}</span>}
+        </p>
+      )}
+    </div>
+  </section>
+
+  <section class="banda banda--claro">
+    <div class="contenedor ficha-cuerpo">
+      <article class="texto-largo ficha-detalle">
+        {f.detalle.map((p) => <p>{p}</p>)}
+      </article>
+      <aside class="ficha-lado">
+        {(datos.length > 0 || f.precio || personas) && (
+          <div class="ficha-datos">
+            <h2 class="ficha-lado-titulo">En pocas palabras</h2>
+            <dl>
+              {f.categoria && <div><dt>Tipo</dt><dd>{f.categoria}</dd></div>}
+              {f.precio && <div><dt>Precio</dt><dd>{f.precio}</dd></div>}
+              {personas && <div><dt>Capacidad</dt><dd>{personas}</dd></div>}
+              {datos.map((d) => <div><dt>{d.etiqueta}</dt><dd>{d.valor}</dd></div>)}
+            </dl>
+          </div>
+        )}
+        <div class="ficha-caja banda--bosque">
+          <p class="ficha-caja-titulo">{esEstancia ? '¿Te lo guardamos?' : '¿Quieres que te lo contemos?'}</p>
+          <p>{esEstancia ? 'Dinos tus fechas y te confirmamos disponibilidad y precio.' : 'Pregúntanos en recepción o escríbenos antes de venir.'}</p>
+          <div class="botones">
+            <a class="btn" href={reserva}>{textoReserva}</a>
+            {wa && <a class="btn-sec" href={wa} target="_blank" rel="noopener">WhatsApp</a>}
+          </div>
+          {c.telefono && <a class="ficha-tel" href={tel(c.telefono)}><Icono nombre="telefono" tam={18} /> {c.telefono}</a>}
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  {f.imagenes.length > 0 && (
+    <section aria-label={`Fotos de ${f.titulo}`}>
+      <ul class="ficha-mosaico">
+        {f.imagenes.map((src, i) => (
+          <li><Imagen src={src} alt={`${f.titulo}: ${altGaleria(i).toLowerCase()}`} ancho={1200} alto={900} /></li>
+        ))}
+      </ul>
+    </section>
+  )}
+
+  {otras.length > 0 && (
+    <section class="banda banda--salvia">
+      <div class="contenedor">
+        <Titular antetitulo={nombreSeccion} titulo={tituloOtras} />
+        <ul class="ficha-otras">
+          {otras.map((o) => (
+            <li class="estancia estancia--enlace">
+              {o.imagen && (
+                <div class="estancia-foto">
+                  <Imagen src={o.imagen} alt={o.titulo} ancho={900} alto={675} />
+                  {o.categoria && <span class="estancia-tipo rotulo">{o.categoria}</span>}
+                  {o.precio && <span class="estancia-precio">{o.precio}</span>}
+                </div>
+              )}
+              <div class="estancia-cuerpo">
+                <h3 class="estancia-titulo"><a href={o.url}>{o.titulo}</a></h3>
+                {o.texto && <p class="estancia-texto">{o.texto}</p>}
+                <span class="estancia-ver enlace-flecha" aria-hidden="true">Ver más <Icono nombre="flecha" tam={16} /></span>
+              </div>
+            </li>
+          ))}
+        </ul>
+        <p class="mt-14"><a class="btn-sec" href={rutaDeSeccion(f.idSeccion)}>{verTodas}</a></p>
+      </div>
+    </section>
+  )}
+</Base>
+
+<style>
+  .ficha-cabeza { position: relative; isolation: isolate; display: flex; flex-direction: column; justify-content: flex-end; background: var(--bosque); color: #fff; padding-block: 2.5rem 3.5rem; }
+  .ficha-cabeza--foto { min-height: max(30rem, 74svh); padding-top: calc(var(--alto-cabecera) + 2rem); padding-bottom: 3.5rem; background: var(--bosque-hondo); }
+  .ficha-cabeza .antetitulo { color: #fff; opacity: .9; margin-top: 2rem; }
+  .migas ol { display: flex; flex-wrap: wrap; gap: .25rem .6rem; font-size: .92rem; }
+  .migas li { display: inline-flex; align-items: center; gap: .6rem; min-width: 0; }
+  .migas li + li::before { content: "/"; opacity: .6; }
+  .migas a { color: inherit; text-decoration: none; min-height: 2.75rem; display: inline-flex; align-items: center; opacity: .9; }
+  .migas a:hover { text-decoration: underline; text-underline-offset: 4px; }
+  .migas [aria-current] { opacity: .75; overflow-wrap: anywhere; }
+  .ficha-titulo { margin-top: .8rem; font-size: clamp(2.6rem, 7.5vw, 6.5rem); line-height: .98; letter-spacing: -.025em; max-width: 18ch; overflow-wrap: anywhere; }
+  .ficha-entradilla { margin-top: 1.1rem; font-size: clamp(1.05rem, 1.5vw, 1.25rem); max-width: 42rem; opacity: .92; }
+  .ficha-chips { display: flex; flex-wrap: wrap; gap: .6rem; margin-top: 1.75rem; }
+  .ficha-chip { display: inline-flex; align-items: center; gap: .45rem; padding: .5rem 1rem; border-radius: 999px; background: rgb(255 255 255 / .16); border: 1px solid rgb(255 255 255 / .35); font-weight: 600; font-size: .95rem; }
+  .ficha-chip--precio { background: var(--hueso); color: var(--c-texto); border-color: transparent; }
+  .ficha-cuerpo { display: grid; gap: 3.5rem; }
+  .ficha-detalle { font-size: 1.12rem; min-width: 0; }
+  .ficha-detalle p + p { margin-top: 1.3rem; }
+  .ficha-detalle p:first-child { font-family: var(--fuente-titulos); font-size: clamp(1.4rem, 2.4vw, 1.8rem); line-height: 1.4; }
+  .ficha-lado { display: grid; gap: 1.75rem; align-content: start; min-width: 0; }
+  .ficha-lado-titulo { font-size: 1.6rem; margin-bottom: .5rem; }
+  .ficha-datos dl > div { display: flex; justify-content: space-between; gap: 1.25rem; padding: .85rem 0; border-top: 1px solid var(--linea); }
+  .ficha-datos dt { font-weight: 600; color: var(--acento-texto); }
+  .ficha-datos dd { text-align: right; min-width: 0; overflow-wrap: anywhere; }
+  .ficha-caja { display: grid; gap: .9rem; padding: 2rem 1.5rem; border-radius: var(--radio-foto); }
+  .ficha-caja-titulo { font-family: var(--fuente-titulos); font-size: 1.8rem; line-height: 1.1; }
+  .ficha-tel { display: inline-flex; align-items: center; gap: .5rem; min-height: 2.75rem; font-weight: 600; text-decoration: none; color: inherit; }
+  .ficha-tel:hover { text-decoration: underline; text-underline-offset: 4px; }
+  .ficha-mosaico > li { overflow: hidden; min-width: 0; }
+  .ficha-mosaico :global(img) { width: 100%; height: 100%; object-fit: cover; }
+  .ficha-mosaico { display: grid; gap: .5rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr)); grid-auto-rows: clamp(14rem, 40vw, 24rem); }
+  .ficha-otras { display: grid; gap: 3rem 2rem; grid-template-columns: repeat(auto-fill, minmax(min(100%, 18rem), 1fr)); }
+  @media (min-width: 1024px) {
+    .ficha-cuerpo { grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr); gap: 6rem; align-items: start; }
+    .ficha-lado { position: sticky; top: calc(var(--alto-cabecera) + 2rem); }
+  }
+</style>

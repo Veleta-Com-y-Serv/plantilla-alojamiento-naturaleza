@@ -1,0 +1,43 @@
+---
+// Servicios e instalaciones: banda bosque que empieza con una foto panorámica a sangre (`imagen`, de borde a borde) y
+// sigue con el titular partido y una rejilla de iconos (`items`: titulo, texto, icono) en dos columnas en el móvil y
+// cuatro en escritorio. Sin foto, solo el titular y los iconos. Botón (`cta`) opcional.
+import { seccion, nueva } from '../../data/site';
+import { altSeccion } from '../../lib/seo';
+import Titular from '../ui/Titular.astro';
+import Imagen from '../ui/Imagen.astro';
+import Icono from '../ui/Icono.astro';
+interface Props { id: string }
+const s = seccion(Astro.props.id);
+---
+
+{
+  s && (
+    <section id={Astro.props.id} class:list={['banda banda--bosque', { '!pt-0': !!s.imagen }]}>
+      {s.imagen && (
+        <div class="panoramica mb-16 md:mb-24">
+          <Imagen src={s.imagen} alt={altSeccion(s)} ancho={1920} alto={730} />
+        </div>
+      )}
+      <div class="contenedor">
+        <Titular alinear="partido" antetitulo={s.antetitulo} titulo={s.titulo} texto={s.texto} />
+        {s.items.length > 0 && (
+          <ul class="servicios-rejilla">
+            {s.items.map((it) => (
+              <li>
+                <span class="servicio-icono"><Icono nombre={it.icono || 'check'} tam={24} /></span>
+                <h3 class="servicio-titulo">{it.titulo}</h3>
+                {it.texto && <p class="servicio-texto">{it.texto}</p>}
+              </li>
+            ))}
+          </ul>
+        )}
+        {s.cta?.url && (
+          <p class="mt-14">
+            <a class="btn" href={s.cta.url} {...nueva(s.cta.url)}>{s.cta.texto}</a>
+          </p>
+        )}
+      </div>
+    </section>
+  )
+}

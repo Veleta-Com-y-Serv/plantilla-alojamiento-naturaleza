@@ -1,0 +1,78 @@
+---
+// Portada a pantalla casi completa: foto a sangre con un velo oscuro de abajo arriba y, abajo a la izquierda, el
+// antetítulo, el NOMBRE del alojamiento enorme en serifa, el lema (`titulo`), la entradilla (`texto`), dos botones de
+// píldora y los detalles (`items`: titulo + icono) en una línea. Si el lema es igual que el nombre, no se repite.
+// En escritorio, si la sección de reservas está activa, una barra blanca montada sobre el borde inferior pide llegada,
+// salida y personas y lleva a reservas con las fechas puestas (src/components/ui/FormularioContacto.astro las lee).
+// Sin foto, la portada es de color bosque hondo. Sin `cta`, el botón principal llama por teléfono.
+import { seccion, site, tel, nueva } from '../../data/site';
+import { altHero } from '../../lib/seo';
+import { enlace } from '../../lib/multipagina';
+import Imagen from '../ui/Imagen.astro';
+import Icono from '../ui/Icono.astro';
+interface Props { id: string; primera?: boolean }
+const { id, primera = false } = Astro.props;
+const s = seccion(id);
+const c = site.contacto;
+const principal = s?.cta?.url ? s.cta : c.telefono ? { texto: c.telefono, url: tel(c.telefono) } : null;
+const secundario = s?.cta_secundario?.url ? s.cta_secundario : null;
+const items = s?.items ?? [];
+const lema = s?.titulo && s.titulo.trim().toLowerCase() !== site.nombre.trim().toLowerCase() ? s.titulo : '';
+const reservas = seccion('reservas') ? enlace('/#reservas') : '';
+const destino = reservas.split('#')[0] || '/';
+---
+
+{
+  s && (
+    <section id={id} class:list={['portada', { 'portada--con-barra': !!reservas }]}>
+      {s.imagen && (
+        <div class="portada-foto">
+          <Imagen src={s.imagen} alt={altHero()} ancho={1920} alto={1080} prioridad={primera} />
+        </div>
+      )}
+      <div class="contenedor portada-texto">
+        {s.antetitulo && <p class="antetitulo">{s.antetitulo}</p>}
+        <h1 class="portada-nombre">{site.nombre}</h1>
+        {lema && <p class="portada-lema">{lema}</p>}
+        {s.texto && <p class="portada-entradilla">{s.texto}</p>}
+        {(principal || secundario) && (
+          <div class="botones">
+            {principal && <a class="btn" href={principal.url} {...nueva(principal.url)}>{principal.texto}</a>}
+            {secundario && <a class="btn-sec" href={secundario.url} {...nueva(secundario.url)}>{secundario.texto}</a>}
+          </div>
+        )}
+        {items.length > 0 && (
+          <ul class="portada-datos">
+            {items.map((it) => (
+              <li>
+                <Icono nombre={it.icono || 'check'} tam={20} />
+                <span>{it.titulo}</span>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+      {reservas && (
+        <div class="barra-fechas">
+          <div class="contenedor">
+            <form action={`${destino}#reservas`} method="get" aria-label="Consultar fechas">
+              <div>
+                <label for={`${id}-llegada`}>Llegada</label>
+                <input id={`${id}-llegada`} name="llegada" type="date" />
+              </div>
+              <div>
+                <label for={`${id}-salida`}>Salida</label>
+                <input id={`${id}-salida`} name="salida" type="date" />
+              </div>
+              <div>
+                <label for={`${id}-personas`}>Personas</label>
+                <input id={`${id}-personas`} name="personas" type="number" min="1" max="60" inputmode="numeric" placeholder="2" />
+              </div>
+              <button type="submit" class="btn">Ver disponibilidad</button>
+            </form>
+          </div>
+        </div>
+      )}
+    </section>
+  )
+}

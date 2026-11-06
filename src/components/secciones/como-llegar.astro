@@ -1,0 +1,83 @@
+---
+// Cómo llegar: banda bosque hondo. A la izquierda, titular, texto, formas de llegar (`items`: titulo, texto, icono) y
+// el botón a Google Maps (`cta`; sin destino, se calcula con la dirección de site.yaml). A la derecha, el mapa: hasta
+// que el visitante pulsa «Ver el mapa aquí» se ve la foto (`imagen`) y no se carga nada de Google (sin cookies ajenas);
+// al pulsar, se carga el mapa de la dirección. Sin dirección, solo la foto.
+import { seccion, site, mapa, nueva } from '../../data/site';
+import { altSeccion } from '../../lib/seo';
+import Titular from '../ui/Titular.astro';
+import Imagen from '../ui/Imagen.astro';
+import Icono from '../ui/Icono.astro';
+interface Props { id: string }
+const s = seccion(Astro.props.id);
+const direccion = site.contacto.direccion;
+const enMaps = s?.cta?.url || mapa(direccion);
+const textoMaps = s?.cta?.texto || 'Abrir en Google Maps';
+const incrustado = direccion ? `https://maps.google.com/maps?q=${encodeURIComponent(direccion)}&z=13&output=embed` : '';
+---
+
+{
+  s && (
+    <section id={Astro.props.id} class="banda banda--hondo">
+      <div class="contenedor llegar">
+        <div>
+          <Titular antetitulo={s.antetitulo} titulo={s.titulo} texto={s.texto} class="!mb-0" />
+          {direccion && (
+            <p class="mt-6 flex items-start gap-3 font-semibold">
+              <Icono nombre="mapa" tam={22} class="mt-0.5 flex-none" />
+              <span>{direccion}</span>
+            </p>
+          )}
+          {s.items.length > 0 && (
+            <ul class="vias-llegar">
+              {s.items.map((it) => (
+                <li>
+                  <Icono nombre={it.icono || 'ruta'} tam={24} />
+                  <div>
+                    <p class="vias-llegar-titulo">{it.titulo}</p>
+                    {it.texto && <p class="mt-1 text-[.97rem] opacity-80">{it.texto}</p>}
+                  </div>
+                </li>
+              ))}
+            </ul>
+          )}
+          {enMaps && (
+            <p class="mt-10">
+              <a class="btn" href={enMaps} {...nueva(enMaps)}>{textoMaps}</a>
+            </p>
+          )}
+        </div>
+        {(s.imagen || incrustado) && (
+          <div class="mapa" data-mapa={incrustado || undefined}>
+            {s.imagen && <Imagen src={s.imagen} alt={altSeccion(s)} ancho={1200} alto={900} />}
+            {incrustado && (
+              <div class="mapa-capa">
+                <span class="mapa-pin" aria-hidden="true"><Icono nombre="mapa" tam={30} /></span>
+                <button type="button" class="btn" data-mapa-cargar>Ver el mapa aquí</button>
+                <p>Se carga el mapa de Google con nuestra dirección.</p>
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+    </section>
+  )
+}
+<script is:inline>
+  (function () {
+    document.querySelectorAll('[data-mapa-cargar]').forEach(function (b) {
+      b.addEventListener('click', function () {
+        var caja = b.closest('[data-mapa]');
+        if (!caja) return;
+        var f = document.createElement('iframe');
+        f.src = caja.getAttribute('data-mapa');
+        f.title = 'Mapa de cómo llegar';
+        f.loading = 'lazy';
+        f.referrerPolicy = 'no-referrer-when-downgrade';
+        caja.appendChild(f);
+        var capa = caja.querySelector('.mapa-capa');
+        if (capa) capa.remove();
+      });
+    });
+  })();
+</script>
