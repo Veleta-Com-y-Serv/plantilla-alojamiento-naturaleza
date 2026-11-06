@@ -24,7 +24,7 @@ secciones:
   - { id: contacto, nombre: Contacto }
 estilo: natural
 plan_minimo: presencia
-version: 1.0.0
+version: 1.0.1
 base: astrowind
 demo_url: https://demo-plantilla-alojamiento-naturaleza.noexpertise.com
 activa: true

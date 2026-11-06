@@ -100,7 +100,7 @@
   main:has(> .portada:first-child) { padding-top: 0; }
 
   /* ---------- Portada ---------- */
-  .portada { position: relative; isolation: isolate; display: flex; flex-direction: column; justify-content: flex-end; min-height: max(36rem, 92svh); color: #fff; background: var(--bosque-hondo); padding-top: calc(var(--alto-cabecera) + 2rem); }
+  .portada { position: relative; z-index: 1; isolation: isolate; display: flex; flex-direction: column; justify-content: flex-end; min-height: max(36rem, 92svh); color: #fff; background: var(--bosque-hondo); padding-top: calc(var(--alto-cabecera) + 2rem); }
   .portada-foto { position: absolute; inset: 0; z-index: -2; }
   .portada-foto img { width: 100%; height: 100%; object-fit: cover; }
   .portada::before { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(to top, rgb(0 0 0 / .74) 0%, rgb(0 0 0 / .4) 40%, rgb(0 0 0 / .06) 68%, rgb(0 0 0 / .34) 100%); }
